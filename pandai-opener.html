@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandai · Opener</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141029;--paper:#fff;--coral:#ff5436;--teal:#10b3a3;--teal-deep:#0c8c80;--gold:#ffc83d;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--ink);color:#fff;overflow:hidden;height:100vh;-webkit-font-smoothing:antialiased}
+  .display{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.08}
+
+  .glow{position:fixed;border-radius:50%;filter:blur(90px);opacity:.4;pointer-events:none;z-index:0}
+  .g1{width:420px;height:420px;background:var(--coral);top:-140px;right:-120px}
+  .g2{width:380px;height:380px;background:var(--teal);bottom:-150px;left:-120px}
+
+  .screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 6vw;z-index:2;text-align:center}
+  .screen.active{display:flex;animation:fade .5s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  .kicker{font-family:'Space Grotesk',sans-serif;font-size:clamp(.72rem,2vw,.85rem);font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+  .q{font-size:clamp(1.8rem,6vw,3.6rem);font-weight:700;max-width:18ch;margin-bottom:6px}
+  .qsub{font-size:clamp(.95rem,2.4vw,1.15rem);color:#a8a4c4;margin-bottom:38px}
+
+  .opts{width:100%;max-width:680px;display:grid;gap:14px}
+  .opt{position:relative;overflow:hidden;border:2px solid rgba(255,255,255,.16);border-radius:16px;padding:0;cursor:pointer;background:rgba(255,255,255,.04);transition:border-color .2s,transform .1s}
+  .opt:hover{border-color:var(--teal);transform:translateY(-1px)}
+  .opt .bar{position:absolute;inset:0;width:0;background:rgba(16,179,163,.28);transition:width .7s cubic-bezier(.2,.8,.2,1);z-index:0}
+  .opt .row{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px}
+  .opt .txt{font-size:clamp(1rem,2.6vw,1.3rem);font-weight:600;text-align:left}
+  .opt .cnt{font-family:'Space Grotesk',sans-serif;font-size:clamp(1rem,2.6vw,1.3rem);font-weight:600;color:var(--gold);min-width:2ch}
+
+  .hint{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:5;font-size:.82rem;color:#8e8ab0;display:flex;align-items:center;gap:16px}
+  .nextbtn{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.06);color:#efeef8;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.92rem;padding:10px 22px;border-radius:100px;cursor:pointer;transition:border-color .2s,transform .1s}
+  .nextbtn:hover{border-color:#fff;transform:translateY(-1px)}
+  .totals{font-size:.8rem;color:#6a6584;margin-top:22px;height:16px}
+
+  .startbtn{margin-top:14px;border:none;background:var(--coral);color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.1rem;padding:16px 40px;border-radius:100px;cursor:pointer;transition:transform .15s}
+  .startbtn:hover{transform:translateY(-2px)}
+  .title-huge{font-size:clamp(3rem,15vw,7rem);font-weight:700}
+  .title-huge .dot{color:var(--coral)}
+
+  /* Yes/No dodge */
+  .yn-stage{position:relative;width:100%;max-width:680px;height:min(46vh,360px);margin-top:10px}
+  .yn{position:absolute;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(1.2rem,4vw,1.8rem);border:none;border-radius:18px;padding:22px 46px;cursor:pointer}
+  .yes{background:var(--teal);color:#04342c;left:50%;top:34%;transform:translate(-50%,-50%);transition:transform .12s;z-index:2}
+  .yes:hover{transform:translate(-50%,-50%) scale(1.05)}
+  .no{background:#2c2748;color:#cbc8e0;border:2px solid rgba(255,255,255,.2);left:50%;top:66%;transform:translate(-50%,-50%);transition:left .18s ease,top .18s ease;z-index:3}
+
+  .end .q{max-width:22ch}
+  .segue{color:var(--teal);font-weight:700}
+</style>
+</head>
+<body>
+  <div class="glow g1"></div><div class="glow g2"></div>
+
+  <!-- 0 WELCOME -->
+  <section class="screen active" data-screen="0">
+    <div class="kicker">ENGF103 · Community Innovation Spotlight</div>
+    <div class="title-huge display">Pandai<span class="dot">.</span></div>
+    <p class="qsub" style="margin-top:14px">Before we get into it — a few quick questions for the room.</p>
+    <button class="startbtn" id="startBtn">Let's go →</button>
+  </section>
+
+  <!-- 1 Q1 -->
+  <section class="screen" data-screen="1">
+    <div class="kicker">Question 1 of 3</div>
+    <h1 class="q display">Be honest — how do you actually study the night before an exam?</h1>
+    <p class="qsub">Tap what the room shouts. No judgment. (Okay, a little.)</p>
+    <div class="opts" data-q="q1">
+      <button class="opt" data-opt="0"><div class="bar"></div><div class="row"><span class="txt">Full panic mode 😰</span><span class="cnt">0</span></div></button>
+      <button class="opt" data-opt="1"><div class="bar"></div><div class="row"><span class="txt">Last-minute cramming</span><span class="cnt">0</span></div></button>
+      <button class="opt" data-opt="2"><div class="bar"></div><div class="row"><span class="txt">I don't 💀</span><span class="cnt">0</span></div></button>
+      <button class="opt" data-opt="3"><div class="bar"></div><div class="row"><span class="txt">Actually prepared (sure you are)</span><span class="cnt">0</span></div></button>
+    </div>
+    <div class="totals" data-total="q1"></div>
+  </section>
+
+  <!-- 2 Q2 -->
+  <section class="screen" data-screen="2">
+    <div class="kicker">Question 2 of 3</div>
+    <h1 class="q display">What's stopped you from getting extra help when you needed it?</h1>
+    <p class="qsub">Tap the answers as they come in.</p>
+    <div class="opts" data-q="q2">
+      <button class="opt" data-opt="0"><div class="bar"></div><div class="row"><span class="txt">Too expensive</span><span class="cnt">0</span></div></button>
+      <button class="opt" data-opt="1"><div class="bar"></div><div class="row"><span class="txt">No good tutors nearby</span><span class="cnt">0</span></div></button>
+      <button class="opt" data-opt="2"><div class="bar"></div><div class="row"><span class="txt">No time</span><span class="cnt">0</span></div></button>
+      <button class="opt" data-opt="3"><div class="bar"></div><div class="row"><span class="txt">Too shy to ask</span><span class="cnt">0</span></div></button>
+    </div>
+    <div class="totals" data-total="q2"></div>
+  </section>
+
+  <!-- 3 Q3 YES/NO -->
+  <section class="screen" data-screen="3">
+    <div class="kicker">Last one</div>
+    <h1 class="q display">Would you use a free app that could actually raise your grades?</h1>
+    <p class="qsub">Choose wisely. One of these buttons has commitment issues.</p>
+    <div class="yn-stage" id="ynStage">
+      <button class="yn yes" id="yesBtn">YES</button>
+      <button class="yn no" id="noBtn">No</button>
+    </div>
+  </section>
+
+  <!-- 4 END -->
+  <section class="screen end" data-screen="4">
+    <div class="kicker">Thought so.</div>
+    <h1 class="q display">Great — because that's <span class="segue">exactly</span> what we're about to show you.</h1>
+    <p class="qsub">Meet Pandai.</p>
+    <button class="startbtn" id="toPresent">Start the presentation →</button>
+  </section>
+
+  <div class="hint">
+    <span id="hintText">▶ Press <b>Space</b> or click Next to move on</span>
+    <button class="nextbtn" id="nextBtn">Next →</button>
+  </div>
+
+<script>
+(function(){
+  var screens=[].slice.call(document.querySelectorAll('.screen'));
+  var current=0;
+  var counts={q1:[0,0,0,0],q2:[0,0,0,0]};
+  var hintText=document.getElementById('hintText');
+  var nextBtn=document.getElementById('nextBtn');
+
+  function show(i){
+    if(i<0||i>=screens.length)return;
+    screens[current].classList.remove('active');
+    current=i;
+    screens[current].classList.add('active');
+    var d=screens[current].dataset.screen;
+    if(d==="3"){ hintText.innerHTML='Trap the audience with No 😈 &nbsp;·&nbsp; only Yes works'; resetNo(); }
+    else if(d==="4"){ hintText.innerHTML='Hand off to Person 2 →'; }
+    else if(d==="0"){ hintText.innerHTML='▶ Press <b>Space</b> or click Next to begin'; }
+    else { hintText.innerHTML='▶ Tap options as the room answers · <b>Space</b> = next'; }
+  }
+  function next(){ if(current<screens.length-1) show(current+1); }
+  function prev(){ if(current>0) show(current-1); }
+
+  nextBtn.addEventListener('click',next);
+  document.getElementById('startBtn').addEventListener('click',next);
+  document.getElementById('toPresent').addEventListener('click',function(){
+    window.location.href='https://qari-website.github.io/present/';
+  });
+
+  document.addEventListener('keydown',function(e){
+    if(e.code==='Space'||e.code==='ArrowRight'){e.preventDefault();next();}
+    if(e.code==='ArrowLeft'){e.preventDefault();prev();}
+  });
+
+  /* vote bars */
+  document.querySelectorAll('.opts').forEach(function(group){
+    var q=group.dataset.q;
+    group.querySelectorAll('.opt').forEach(function(opt){
+      opt.addEventListener('click',function(){
+        var idx=parseInt(opt.dataset.opt,10);
+        counts[q][idx]++;
+        renderBars(q,group);
+      });
+    });
+  });
+  function renderBars(q,group){
+    var total=counts[q].reduce(function(a,b){return a+b;},0);
+    group.querySelectorAll('.opt').forEach(function(opt){
+      var idx=parseInt(opt.dataset.opt,10);
+      var pct=total?Math.round((counts[q][idx]/total)*100):0;
+      opt.querySelector('.bar').style.width=pct+'%';
+      opt.querySelector('.cnt').textContent=counts[q][idx];
+    });
+    var tEl=document.querySelector('[data-total="'+q+'"]');
+    if(tEl) tEl.textContent=total+' response'+(total===1?'':'s');
+  }
+
+  /* Yes / No dodge */
+  var stage=document.getElementById('ynStage');
+  var noBtn=document.getElementById('noBtn');
+  var yesBtn=document.getElementById('yesBtn');
+  var quips=['No','Nope','Try again','Missed!','Nice try','You sure?','Catch me','Hah'];
+  var dodges=0;
+  function resetNo(){ noBtn.style.left='50%'; noBtn.style.top='66%'; noBtn.textContent='No'; dodges=0; }
+  function flee(){
+    var s=stage.getBoundingClientRect();
+    var bw=noBtn.offsetWidth, bh=noBtn.offsetHeight;
+    var maxX=s.width-bw, maxY=s.height-bh;
+    var nx=Math.max(0,Math.min(maxX,Math.random()*maxX));
+    var ny=Math.max(0,Math.min(maxY,Math.random()*maxY));
+    noBtn.style.left=nx+'px';
+    noBtn.style.top=ny+'px';
+    noBtn.style.transform='none';
+    dodges++;
+    noBtn.textContent=quips[dodges%quips.length];
+    if(dodges===4){ yesBtn.style.transform='translate(-50%,-50%) scale(1.12)'; }
+  }
+  noBtn.addEventListener('mouseover',flee);
+  noBtn.addEventListener('mousedown',function(e){e.preventDefault();flee();});
+  noBtn.addEventListener('touchstart',function(e){e.preventDefault();flee();},{passive:false});
+  yesBtn.addEventListener('click',next);
+})();
+</script>
+</body>
+</html>
